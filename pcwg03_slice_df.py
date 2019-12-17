@@ -329,14 +329,19 @@ def get_nme_diff_range():
     return nme_diff_df, nme_range_p_df
 
 
-def get_methods_nme(error_cat):
+def get_methods_error(error_cat, nmae_choice=None):
     """Get average and spread statistics for Outer Range WS bins."""
+
+    if nmae_choice is True:
+        error_choice = 'nmae'
+    else:
+        error_choice = 'nme'
 
     all_outws_nme_df = pd.DataFrame()
 
     for method in pc.matrix_sheet_name_short:
         df = error_df[method + 'total_e']
-        df_s = df.loc[(df['error_cat'] == error_cat) & (df['error_name'] == 'nme')]
+        df_s = df.loc[(df['error_cat'] == error_cat) & (df['error_name'] == error_choice)]
         df_s_toadd = copy.copy(df_s)
         df_s_toadd['method'] = method.rstrip('_')
         all_outws_nme_df = pd.concat([all_outws_nme_df, df_s_toadd], axis=0)
@@ -382,7 +387,7 @@ def remove_quantile_in_array(arr):
     return arr.drop(arr[arr.values < bottom].index)
 
 
-def perform_stat_test(wsti=False, error_cat=None,
+def perform_stat_test(wsti=False, error_cat=None, nmae_choice=None,
                       remove_outlier_choice=False, remove_quantile=False, bonferroni=None, percent_thres=None):
     """Perform statistical tests for |NME| differences between methods and Baseline.
     Calculate percentage of submissions of a method in an error bin that improves from Baseline.
@@ -401,7 +406,7 @@ def perform_stat_test(wsti=False, error_cat=None,
         if error_cat is None:
             print('missing ')
         else:
-            nme_df = get_methods_nme(error_cat)
+            nme_df = get_methods_error(error_cat, nmae_choice=nmae_choice)
 
     base_df_s = extract_base_df_s(nme_df)
 

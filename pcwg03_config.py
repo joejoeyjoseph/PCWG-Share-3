@@ -12,11 +12,12 @@ import copy
 ### Data path
 ### Point to the directory containing the Excel files
 
-data_file_path = 'DATA_PATH'
+#data_file_path = 'DATA_PATH'
+data_file_path = '/Users/jlee/Documents/GitHub/PCWG_Share_03/data_03/data/'
 
 ### Save figure in pdf/png file or not
 
-save_fig = False
+save_fig = True
 
 ########################################################################################################
 
